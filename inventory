@@ -1,2 +1,5 @@
 [web_servers] 
-172.17.217.224 
+172.17.217.224
+
+[workstations]
+ 

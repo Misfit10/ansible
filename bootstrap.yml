@@ -1,0 +1,40 @@
+---
+
+- hosts: all
+  become: true
+  pre_tasks:
+
+  - name: install apache and php packages for ubuntu
+    tags: always
+    apt:
+      upgrade: dist 
+      update_cache: yes
+    
+    when: ansible_distribution == "Ubuntu"
+
+- hosts: all
+  become: true
+  tasks:
+
+  - name: create misfit user
+    tags: always
+    user:
+      name: misfit
+      groups: root
+
+  - name: add ssh key for misfit
+    tags: always
+    authorized_key:
+      user: misfit
+      key: "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIOnm5lSViyUlE+v3Fi03lir7iLKRKtZ0QrcW55pvbc2D ansible"  
+
+  - name: add sudoers file for misfit
+    tags: always
+    copy:
+      src: sudoer_misfit
+      dest: /etc/sudoers.d/misfit
+      owner: root
+      group: root
+      mode: 0440
+        
+  

@@ -4,16 +4,25 @@
   become: true
   pre_tasks:
 
-  - name: install apache and php packages for ubuntu
+  - name: update repo cache (Ubuntu)
     tags: always
-    apt:
-      upgrade: dist 
+    apt: 
       update_cache: yes
+    changed_when: false
     
     when: ansible_distribution == "Ubuntu"
 
-   
+- hosts: all
+  become: true
+  tasks:
 
+  - name: add ssh key for misfit
+    tags: always
+    authorized_key:
+      user: misfit
+      key: "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIOnm5lSViyUlE+v3Fi03lir7iLKRKtZ0QrcW55pvbc2D ansible"  
+
+        
 - hosts: workstations
   become: true
   tasks: 
